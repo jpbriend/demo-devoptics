@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: draft
-  tag: dev
+  repository: 10.7.251.164:5000/jpbriend/demo-devoptics
+  tag: 0.0.7
   pullPolicy: IfNotPresent
 service:
   name: demo-devoptics
