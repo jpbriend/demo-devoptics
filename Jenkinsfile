@@ -48,6 +48,7 @@ pipeline {
           sh "mvn versions:set -DnewVersion=\$(cat VERSION)"
           sh "jx step tag --version \$(cat VERSION)"
           sh "mvn clean deploy"
+          
           sh "skaffold version"
           sh "export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml"
           sh "jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION)"
@@ -68,6 +69,10 @@ pipeline {
 
             // promote through all 'Auto' promotion Environments
             sh "jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)"
+            
+            // Track Docker image via DevOptics
+            sh "set ARTIFACT_VERSION=$(cat ../../VERSION)"
+            gateProducesArtifact type: “docker”, id: "${APP_NAME}-${env.ARTIFACT_VERSION}"
           }
         }
       }
