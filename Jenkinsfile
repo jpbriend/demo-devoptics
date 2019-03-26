@@ -72,7 +72,7 @@ pipeline {
             
             // Track Docker image via DevOptics
             script {
-              def artifact_version = sh '$(cat ../../VERSION)'
+              def artifact_version = sh 'cat ../../VERSION'
               echo "${APP_NAME}-${artifact_version}"
               gateProducesArtifact type: 'docker', id: "${APP_NAME}-${artifact_version}"
               echo "After gateProducesArtifact"
