@@ -71,10 +71,12 @@ pipeline {
             sh "jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)"
             
             // Track Docker image via DevOptics
-            sh 'export ARTIFACT_VERSION=$(cat ../../VERSION)'
-            echo "${APP_NAME}-${ARTIFACT_VERSION}"
-            gateProducesArtifact type: 'docker', id: "${APP_NAME}-${ARTIFACT_VERSION}"
-            echo "After gateProducesArtifact"
+            script {
+              def artifact_version = sh '$(cat ../../VERSION)'
+              echo "${APP_NAME}-${artifact_version}"
+              gateProducesArtifact type: 'docker', id: "${APP_NAME}-${artifact_version}"
+              echo "After gateProducesArtifact"
+            }
           }
         }
       }
